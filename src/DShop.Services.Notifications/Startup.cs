@@ -5,10 +5,13 @@ using Autofac.Extensions.DependencyInjection;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
+using DShop.Services.Notifications.ServiceForwarders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using DShop.Common.RestEase;
+using DShop.Messages.Events.Orders;
 
 namespace DShop.Services.Notifications
 {
@@ -28,6 +31,9 @@ namespace DShop.Services.Notifications
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
+
+            builder.RegisterServiceForwarder<ICustomersApi>("customers-service");
+
             builder.Populate(services);
             builder.AddRabbitMq();
             builder.AddMongoDB();
@@ -45,7 +51,8 @@ namespace DShop.Services.Notifications
             }
             app.UseMvc();
             app.UseErrorHandler();
-            app.UseRabbitMq();
+            app.UseRabbitMq()
+                .SubscribeEvent<OrderCreated>();
             applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());
         }
     }

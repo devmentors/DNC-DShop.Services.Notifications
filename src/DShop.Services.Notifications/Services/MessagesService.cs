@@ -18,7 +18,7 @@ namespace DShop.Services.Notifications.Services
         {
             using (var client = new SmtpClient())
             {
-                client.Connect(_options.SmtpHost, _options.Port);
+                client.Connect(_options.SmtpHost, _options.Port, true);
                 client.Authenticate(_options.Username, _options.Password);
 
                 await client.SendAsync(message);

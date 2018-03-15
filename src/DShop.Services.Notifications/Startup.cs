@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DShop.Common.RestEase;
 using DShop.Messages.Events.Orders;
+using DShop.Common.Handlers;
+using DShop.Common.MailKit;
 
 namespace DShop.Services.Notifications
 {
@@ -37,7 +39,10 @@ namespace DShop.Services.Notifications
             builder.Populate(services);
             builder.AddRabbitMq();
             builder.AddMongoDB();
+            builder.AddMailKit();
             Container = builder.Build();
+
+            Container.Resolve<IEventHandler<OrderCreated>>().HandleAsync(null, null);
 
             return new AutofacServiceProvider(Container);
         }

@@ -5,6 +5,7 @@ using DShop.Messages.Events.Orders;
 using DShop.Services.Notifications.Builders;
 using DShop.Services.Notifications.ServiceForwarders;
 using DShop.Services.Notifications.Services;
+using DShop.Services.Notifications.Templates;
 using System.Threading.Tasks;
 
 namespace DShop.Services.Notifications.Handlers
@@ -33,8 +34,8 @@ namespace DShop.Services.Notifications.Handlers
                 .Create()
                 .WithReceiver(customer.Email)
                 .WithSender(_options.Email)
-                .WithSubject("Order created")
-                .WithBody("Order created")
+                .WithSubject(MessageTemplates.OrderCreatedSubject, @event.Number)
+                .WithBody(MessageTemplates.OrderCreatedBody, customer.FirstName, customer.LastName, @event.Number)
                 .Build();
 
             await _messagesService.SendAsync(message);

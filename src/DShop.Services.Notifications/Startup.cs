@@ -14,6 +14,7 @@ using DShop.Common.RestEase;
 using DShop.Messages.Events.Orders;
 using DShop.Common.Handlers;
 using DShop.Common.MailKit;
+using DShop.Services.Notifications.Templates;
 
 namespace DShop.Services.Notifications
 {

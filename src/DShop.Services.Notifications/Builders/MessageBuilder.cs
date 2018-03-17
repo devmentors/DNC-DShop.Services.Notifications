@@ -32,6 +32,9 @@ namespace DShop.Services.Notifications.Builders
             return this;
         }
 
+        IMessageBuilder IMessageBuilder.WithSubject(string template, params object[] @params)
+            => ((IMessageBuilder)this).WithSubject(string.Format(template, @params));
+
         IMessageBuilder IMessageBuilder.WithBody(string body)
         {
             _message.Body = new TextPart("plain")
@@ -40,6 +43,9 @@ namespace DShop.Services.Notifications.Builders
             };
             return this;
         }
+
+        IMessageBuilder IMessageBuilder.WithBody(string template, params object[] @params)
+            => ((IMessageBuilder)this).WithBody(string.Format(template, @params));
 
         MimeMessage IMessageBuilder.Build()
             => _message;

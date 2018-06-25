@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/DShop.Services.Notifications/bin/Debug/netcoreapp2.0/DShop.Services.Notifications.dll",
+            "program": "${workspaceFolder}/src/DShop.Services.Notifications/bin/Debug/netcoreapp2.1/DShop.Services.Notifications.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/DShop.Services.Notifications",
             "stopAtEntry": false,

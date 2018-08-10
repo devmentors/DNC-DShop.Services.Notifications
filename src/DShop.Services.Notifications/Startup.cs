@@ -2,6 +2,7 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DShop.Common.AppMetrics;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
@@ -31,11 +32,11 @@ namespace DShop.Services.Notifications
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddDefaultJsonOptions();
+            services.AddCustomMvc();
+            services.AddAppMetrics();
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
-                    
             builder.Populate(services);
             builder.RegisterServiceForwarder<ICustomersApi>("customers-service");
             builder.AddDispatchers();
@@ -54,8 +55,9 @@ namespace DShop.Services.Notifications
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
+            app.UseAppMetrics(applicationLifetime);
             app.UseErrorHandler();
+            app.UseMvc();
             app.UseRabbitMq()
                 .SubscribeEvent<OrderCreated>();
             applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());

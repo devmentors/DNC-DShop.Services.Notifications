@@ -1,4 +1,4 @@
-﻿using DShop.Services.Notifications.Dtos;
+﻿using DShop.Services.Notifications.Dto;
 using RestEase;
 using System;
 using System.Threading.Tasks;

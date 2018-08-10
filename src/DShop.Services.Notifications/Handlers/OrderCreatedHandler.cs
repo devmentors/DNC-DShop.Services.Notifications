@@ -1,8 +1,8 @@
 ﻿using DShop.Common.Handlers;
 using DShop.Common.MailKit;
 using DShop.Common.RabbitMq;
-using DShop.Messages.Events.Orders;
 using DShop.Services.Notifications.Builders;
+using DShop.Services.Notifications.Events;
 using DShop.Services.Notifications.ServiceForwarders;
 using DShop.Services.Notifications.Services;
 using DShop.Services.Notifications.Templates;

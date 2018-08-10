@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DShop.Common.RestEase;
-using DShop.Messages.Events.Orders;
 using DShop.Common.Handlers;
 using DShop.Common.MailKit;
 using DShop.Services.Notifications.Templates;
+using DShop.Services.Notifications.Events;
+using DShop.Common.Dispatchers;
 
 namespace DShop.Services.Notifications
 {
@@ -34,16 +35,14 @@ namespace DShop.Services.Notifications
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
-
-            builder.RegisterServiceForwarder<ICustomersApi>("customers-service");
-
+                    
             builder.Populate(services);
+            builder.RegisterServiceForwarder<ICustomersApi>("customers-service");
+            builder.AddDispatchers();
             builder.AddRabbitMq();
             builder.AddMongoDB();
             builder.AddMailKit();
             Container = builder.Build();
-
-            Container.Resolve<IEventHandler<OrderCreated>>().HandleAsync(null, null);
 
             return new AutofacServiceProvider(Container);
         }

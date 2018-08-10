@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DShop.Services.Notifications.Dtos
+namespace DShop.Services.Notifications.Dto
 {
     public class CustomerDto
     {

@@ -2,6 +2,8 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Consul;
+using DShop.Common.Consul;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
@@ -32,6 +34,7 @@ namespace DShop.Services.Notifications
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMvc();
+            services.AddConsul();
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
@@ -47,17 +50,23 @@ namespace DShop.Services.Notifications
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
-            IApplicationLifetime applicationLifetime)
+            IApplicationLifetime applicationLifetime, IConsulClient client)
         {
             if (env.IsDevelopment() || env.EnvironmentName == "local")
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseErrorHandler();
+            app.UseServiceId();
             app.UseMvc();
             app.UseRabbitMq()
                 .SubscribeEvent<OrderCreated>();
-            applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());
+            var consulServiceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() => 
+            { 
+                client.Agent.ServiceDeregister(consulServiceId); 
+                Container.Dispose(); 
+            });
         }
     }
 }

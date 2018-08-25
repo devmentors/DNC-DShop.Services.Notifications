@@ -35,11 +35,11 @@ namespace DShop.Services.Notifications
         {
             services.AddCustomMvc();
             services.AddConsul();
+            services.RegisterServiceForwarder<ICustomersApi>("customers-service");
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
             builder.Populate(services);
-            builder.RegisterServiceForwarder<ICustomersApi>("customers-service");
             builder.AddDispatchers();
             builder.AddRabbitMq();
             builder.AddMongoDB();

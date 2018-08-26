@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using DShop.Common.Metrics;
 using DShop.Common.Mvc;
+using DShop.Common.Vault;
 
 namespace DShop.Services.Notifications
 {
@@ -15,6 +16,7 @@ namespace DShop.Services.Notifications
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseVault()
                 .UseLockbox()
                 .UseAppMetrics();
     }

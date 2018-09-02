@@ -7,6 +7,7 @@ using DShop.Common.Consul;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
+using DShop.Common.Swagger;
 using DShop.Services.Notifications.ServiceForwarders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,7 @@ namespace DShop.Services.Notifications
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMvc();
+            services.AddSwaggerDocs();
             services.AddConsul();
             services.RegisterServiceForwarder<ICustomersApi>("customers-service");
             var builder = new ContainerBuilder();
@@ -42,7 +44,7 @@ namespace DShop.Services.Notifications
             builder.Populate(services);
             builder.AddDispatchers();
             builder.AddRabbitMq();
-            builder.AddMongoDB();
+            builder.AddMongo();
             builder.AddMailKit();
             Container = builder.Build();
 
@@ -56,6 +58,8 @@ namespace DShop.Services.Notifications
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAllForwardedHeaders();
+            app.UseSwaggerDocs();
             app.UseErrorHandler();
             app.UseServiceId();
             app.UseMvc();

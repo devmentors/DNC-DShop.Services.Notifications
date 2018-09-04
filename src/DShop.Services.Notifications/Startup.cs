@@ -7,6 +7,7 @@ using DShop.Common.Consul;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
+using DShop.Common.Redis;
 using DShop.Common.Swagger;
 using DShop.Services.Notifications.ServiceForwarders;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +38,9 @@ namespace DShop.Services.Notifications
             services.AddCustomMvc();
             services.AddSwaggerDocs();
             services.AddConsul();
+            services.AddRedis();
             services.RegisterServiceForwarder<ICustomersApi>("customers-service");
+
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                     .AsImplementedInterfaces();
@@ -46,6 +49,7 @@ namespace DShop.Services.Notifications
             builder.AddRabbitMq();
             builder.AddMongo();
             builder.AddMailKit();
+
             Container = builder.Build();
 
             return new AutofacServiceProvider(Container);
@@ -58,6 +62,7 @@ namespace DShop.Services.Notifications
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseAllForwardedHeaders();
             app.UseSwaggerDocs();
             app.UseErrorHandler();
@@ -65,6 +70,7 @@ namespace DShop.Services.Notifications
             app.UseMvc();
             app.UseRabbitMq()
                 .SubscribeEvent<OrderCreated>();
+            
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() => 
             { 

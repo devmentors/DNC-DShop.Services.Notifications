@@ -3,6 +3,7 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Consul;
+using DShop.Common;
 using DShop.Common.Consul;
 using DShop.Common.Mongo;
 using DShop.Common.Mvc;
@@ -56,7 +57,8 @@ namespace DShop.Services.Notifications
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
-            IApplicationLifetime applicationLifetime, IConsulClient client)
+            IApplicationLifetime applicationLifetime, IConsulClient client,
+            IStartupInitializer startupInitializer)
         {
             if (env.IsDevelopment() || env.EnvironmentName == "local")
             {
@@ -69,7 +71,7 @@ namespace DShop.Services.Notifications
             app.UseServiceId();
             app.UseMvc();
             app.UseRabbitMq()
-                .SubscribeEvent<OrderCreated>();
+                .SubscribeEvent<OrderCreated>(@namespace: "orders");
             
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() => 
@@ -77,6 +79,8 @@ namespace DShop.Services.Notifications
                 client.Agent.ServiceDeregister(consulServiceId); 
                 Container.Dispose(); 
             });
+
+            startupInitializer.InitializeAsync();
         }
     }
 }

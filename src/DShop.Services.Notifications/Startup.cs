@@ -10,7 +10,7 @@ using DShop.Common.Mvc;
 using DShop.Common.RabbitMq;
 using DShop.Common.Redis;
 using DShop.Common.Swagger;
-using DShop.Services.Notifications.ServiceForwarders;
+using DShop.Services.Notifications.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +40,7 @@ namespace DShop.Services.Notifications
             services.AddSwaggerDocs();
             services.AddConsul();
             services.AddRedis();
-            services.RegisterServiceForwarder<ICustomersApi>("customers-service");
+            services.RegisterServiceForwarder<ICustomersService>("customers-service");
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())

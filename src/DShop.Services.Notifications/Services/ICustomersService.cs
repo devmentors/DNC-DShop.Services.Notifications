@@ -3,9 +3,9 @@ using RestEase;
 using System;
 using System.Threading.Tasks;
 
-namespace DShop.Services.Notifications.ServiceForwarders
+namespace DShop.Services.Notifications.Services
 {
-    public interface ICustomersApi
+    public interface ICustomersService
     {
         [AllowAnyStatusCode]
         [Get("customers/{id}")]

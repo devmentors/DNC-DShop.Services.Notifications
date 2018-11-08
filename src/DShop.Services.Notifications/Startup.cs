@@ -16,11 +16,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DShop.Common.RestEase;
-using DShop.Common.Handlers;
 using DShop.Common.MailKit;
-using DShop.Services.Notifications.Templates;
-using DShop.Services.Notifications.Events;
 using DShop.Common.Dispatchers;
+using DShop.Services.Notifications.Messages.Events;
 
 namespace DShop.Services.Notifications
 {

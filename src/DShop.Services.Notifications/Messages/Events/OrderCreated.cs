@@ -2,7 +2,7 @@
 using DShop.Common.Messages;
 using Newtonsoft.Json;
 
-namespace DShop.Services.Notifications.Events
+namespace DShop.Services.Notifications.Messages.Events
 {
     [MessageNamespace("orders")]
     public class OrderCreated : IEvent

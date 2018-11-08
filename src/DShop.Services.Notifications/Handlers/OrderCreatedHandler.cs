@@ -2,10 +2,10 @@
 using DShop.Common.MailKit;
 using DShop.Common.RabbitMq;
 using DShop.Services.Notifications.Builders;
-using DShop.Services.Notifications.Events;
 using DShop.Services.Notifications.Services;
 using DShop.Services.Notifications.Templates;
 using System.Threading.Tasks;
+using DShop.Services.Notifications.Messages.Events;
 
 namespace DShop.Services.Notifications.Handlers
 {

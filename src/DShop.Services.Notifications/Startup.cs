@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DShop.Common.RestEase;
 using DShop.Common.MailKit;
 using DShop.Common.Dispatchers;
+using DShop.Services.Notifications.Messages.Commands;
 using DShop.Services.Notifications.Messages.Events;
 
 namespace DShop.Services.Notifications
@@ -69,6 +70,7 @@ namespace DShop.Services.Notifications
             app.UseServiceId();
             app.UseMvc();
             app.UseRabbitMq()
+                .SubscribeCommand<SendEmailNotification>()
                 .SubscribeEvent<OrderCreated>(@namespace: "orders");
             
             var consulServiceId = app.UseConsul();

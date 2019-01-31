@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DShop.Common.RestEase;
 using DShop.Common.MailKit;
 using DShop.Common.Dispatchers;
+using DShop.Common.Jaeger;
 using DShop.Services.Notifications.Messages.Commands;
 using DShop.Services.Notifications.Messages.Events;
 
@@ -38,6 +39,8 @@ namespace DShop.Services.Notifications
             services.AddCustomMvc();
             services.AddSwaggerDocs();
             services.AddConsul();
+            services.AddJaeger();
+            services.AddOpenTracing();
             services.AddRedis();
             services.RegisterServiceForwarder<ICustomersService>("customers-service");
 

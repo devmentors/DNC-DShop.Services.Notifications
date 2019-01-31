@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.1.0.2" />
+    <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.5.0" />
   </ItemGroup>
 </Project>
